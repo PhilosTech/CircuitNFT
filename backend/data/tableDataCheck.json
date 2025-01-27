@@ -1,11 +1,11 @@
 [{
-  "name":["CircuitNFT",false],
+  "name":["CircuitNFT",true],
   "quantity": 2458, 
   "date": "12 Jan 2021",
   "progress": 17.5  
 },
 {
-  "name":["FastNFT",true],
+  "name":["FastNFT",false],
   "quantity": 1485, 
   "date": "21 Feb 2021",
   "progress": 10.8  
@@ -27,5 +27,23 @@
   "quantity": 258, 
   "date": "24 Oct 2022",
   "progress": 12.2  
+},
+{
+  "name":["Venus DB PRO",true],
+  "quantity": 1485, 
+  "date": "21.Feb.2021",
+  "progress": 35.4  
+},
+{
+  "name":["Venus DS",true],
+  "quantity": 1024, 
+  "date": "13.Mar.2021",
+  "progress": 25  
+},
+{
+  "name":["Venus 3D Asset",true],
+  "quantity": 858, 
+  "date": "24.Jan.2021",
+  "progress": 100  
 }
 ]

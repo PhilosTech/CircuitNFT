@@ -103,7 +103,7 @@ npm install
 Navigate to the backend directory and install dependencies:
 
 ```bash
-cd ../blockchain
+cd ./backend
 npm install
 ```
 ### Step 4: Set up the blockchain
@@ -111,7 +111,7 @@ npm install
 Navigate to the blockchain directory and install dependencies:
 
 ```bash
-cd ../blockchain
+cd ./blockchain
 npm install
 ```
 ### Step 5: Set up environment variables

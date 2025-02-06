@@ -1,4 +1,4 @@
-import React from "react";
+import React from "react"
 
 // Chakra imports
 import {
@@ -10,33 +10,40 @@ import {
   Text,
   useColorModeValue,
   SimpleGrid,
-} from "@chakra-ui/react";
+} from "@chakra-ui/react"
 
 // Custom components
-import Banner from "views/admin/marketplace/components/Banner";
-import TableTopCreators from "views/admin/marketplace/components/TableTopCreators";
-import HistoryItem from "views/admin/marketplace/components/HistoryItem";
-import NFT from "components/card/NFT";
-import Card from "components/card/Card.js";
+import Banner from "views/admin/marketplace/components/Banner"
+import TableTopCreators from "views/admin/marketplace/components/TableTopCreators"
+import HistoryItem from "views/admin/marketplace/components/HistoryItem"
+import NFT from "components/card/NFT"
+import Card from "components/card/Card.js"
 
 // Assets
-import Nft1 from "assets/img/nfts/Nft1.png";
-import Nft2 from "assets/img/nfts/Nft2.png";
-import Nft3 from "assets/img/nfts/Nft3.png";
-import Nft4 from "assets/img/nfts/Nft4.png";
-import Nft5 from "assets/img/nfts/Nft5.png";
-import Nft6 from "assets/img/nfts/Nft6.png";
-import Avatar1 from "assets/img/avatars/avatar1.png";
-import Avatar2 from "assets/img/avatars/avatar2.png";
-import Avatar3 from "assets/img/avatars/avatar3.png";
-import Avatar4 from "assets/img/avatars/avatar4.png";
-import tableDataTopCreators from "views/admin/marketplace/variables/tableDataTopCreators.json";
-import { tableColumnsTopCreators } from "views/admin/marketplace/variables/tableColumnsTopCreators";
+import Nft1 from "assets/img/nfts/Nft1.png"
+import Nft2 from "assets/img/nfts/Nft2.png"
+import Nft3 from "assets/img/nfts/Nft3.png"
+import Nft4 from "assets/img/nfts/Nft4.png"
+import Nft5 from "assets/img/nfts/Nft5.png"
+import Nft6 from "assets/img/nfts/Nft6.png"
+import Avatar1 from "assets/img/avatars/avatar1.png"
+import Avatar2 from "assets/img/avatars/avatar2.png"
+import Avatar3 from "assets/img/avatars/avatar3.png"
+import Avatar4 from "assets/img/avatars/avatar4.png"
+import tableDataTopCreators from "views/admin/marketplace/variables/tableDataTopCreators.json"
+import { tableColumnsTopCreators } from "views/admin/marketplace/variables/tableColumnsTopCreators"
+import { useContractData } from "hooks/useContract"
+import {useAllMintedNFTs, useAvailableNFTs} from "hooks/useGetNFTs"
 
 export default function Marketplace() {
   // Chakra Color Mode
-  const textColor = useColorModeValue("secondaryGray.900", "white");
-  const textColorBrand = useColorModeValue("brand.500", "white");
+  const textColor = useColorModeValue("secondaryGray.900", "white")
+  const textColorBrand = useColorModeValue("brand.500", "white")
+  const { name, symbol, balance, loading } = useContractData()
+  const {nfts, loading: nftLoading} = useAllMintedNFTs()
+  const {nfts: availableNFTs, loading: availableNFTsLoading} = useAvailableNFTs()
+  
+
   return (
     <Box pt={{ base: "180px", md: "80px", xl: "80px" }}>
       {/* Main Fields */}
@@ -57,7 +64,7 @@ export default function Marketplace() {
               direction={{ base: "column", md: "row" }}
               align={{ base: "start", md: "center" }}>
               <Text color={textColor} fontSize='2xl' ms='24px' fontWeight='700'>
-                Trending NFTs
+                Available NFTs
               </Text>
               <Flex
                 align='center'
@@ -91,9 +98,11 @@ export default function Marketplace() {
               </Flex>
             </Flex>
             <SimpleGrid columns={{ base: 1, md: 3 }} gap='20px'>
-              <NFT
-                name='Abstract Colors'
-                author='By Esthera Jackson'
+            {availableNFTs?.map((nft) => (
+                <NFT
+                key={nft.tokenId}
+                name={nft.name}
+                author='By Peter Will'
                 bidders={[
                   Avatar1,
                   Avatar2,
@@ -104,10 +113,11 @@ export default function Marketplace() {
                   Avatar1,
                   Avatar1,
                 ]}
-                image={Nft4}
+                image={nft.image}
                 currentbid='0.91 ETH'
                 download='#'
               />
+              ))}
               <NFT
                 name='ETH AI Brain'
                 author='By Nick Wilson'
@@ -150,14 +160,16 @@ export default function Marketplace() {
               fontSize='2xl'
               ms='24px'
               fontWeight='700'>
-              Recently Added
+              All NFTs
             </Text>
             <SimpleGrid
               columns={{ base: 1, md: 3 }}
               gap='20px'
               mb={{ base: "20px", xl: "0px" }}>
-              <NFT
-                name='Swipe Circles'
+              {nfts?.map((nft) => (
+                <NFT
+                key={nft.tokenId}
+                name={nft.name}
                 author='By Peter Will'
                 bidders={[
                   Avatar1,
@@ -169,10 +181,11 @@ export default function Marketplace() {
                   Avatar1,
                   Avatar1,
                 ]}
-                image={Nft1}
+                image={nft.image}
                 currentbid='0.91 ETH'
                 download='#'
               />
+              ))}
               <NFT
                 name='Colorful Heaven'
                 author='By Mark Benjamin'
@@ -279,5 +292,5 @@ export default function Marketplace() {
       </Grid>
       {/* Delete Product */}
     </Box>
-  );
+  )
 }

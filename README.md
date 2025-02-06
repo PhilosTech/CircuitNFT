@@ -49,7 +49,7 @@ Here’s an overview of the folder structure:
   - React.js
   - JavaScript (ES6+)
   - Redux (optional for state management)
-  - Web3.js or Ethers.js (for blockchain interaction)
+  - viem or Ethers.js (for blockchain interaction)
 
 - **Backend**:
   - Node.js
@@ -60,7 +60,7 @@ Here’s an overview of the folder structure:
 - **Blockchain**:
   - Solidity
   - Ethereum (for smart contracts)
-  - Truffle or Hardhat (for smart contract development and testing)
+  - Hardhat (for smart contract development and testing)
 
 ---
 
@@ -106,6 +106,12 @@ Navigate to the backend directory and install dependencies:
 cd ./backend
 npm install
 ```
+Create a .env file in the root directory and add your environment variables (e.g., MongoDB URL, Blockchain API keys, etc.):
+
+```bash
+MONGO_URI=mongodb+srv://your-database-name
+```
+
 ### Step 4: Set up the blockchain
 
 Navigate to the blockchain directory and install dependencies:
@@ -120,8 +126,8 @@ Create a .env file in the root directory and add your environment variables (e.g
 
 ```bash
 DATABASE_URL=your_database_url
-BLOCKCHAIN_NETWORK_URL=your_blockchain_network_url
-SECRET_KEY=your_secret_key
+PRIVATE_KEY=your_secret_key
+ETHERSCAN_API_KEY=ETHERSCAN_API_KEY
 ```
 ### Step 6: Start the services
 

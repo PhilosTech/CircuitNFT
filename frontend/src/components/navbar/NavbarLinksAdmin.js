@@ -22,6 +22,8 @@ import { MdNotificationsNone, } from 'react-icons/md';
 import { IoMdMoon, IoMdSunny } from 'react-icons/io';
 import { FaEthereum } from 'react-icons/fa';
 import routes from 'routes';
+import useWallet from 'hooks/useWalletConnect';
+
 export default function HeaderLinks(props) {
   const { secondary } = props;
   const { colorMode, toggleColorMode } = useColorMode();
@@ -38,6 +40,10 @@ export default function HeaderLinks(props) {
     '14px 17px 40px 4px rgba(112, 144, 176, 0.18)',
     '14px 17px 40px 4px rgba(112, 144, 176, 0.06)',
   );
+  const { address, connectWallet } = useWallet();
+
+  console.log(address);
+  
 
   return (
     <Flex
@@ -203,6 +209,16 @@ export default function HeaderLinks(props) {
               px="14px"
             >
               <Text fontSize="sm">Newsletter Settings</Text>
+            </MenuItem>
+            <MenuItem
+              _hover={{ bg: 'blue.50' }}
+              _focus={{ bg: 'none' }}
+              color="green.400"
+              borderRadius="8px"
+              px="14px"
+              onClick={connectWallet}
+            >
+              <Text fontSize="sm">connect to Wallet</Text>
             </MenuItem>
             <MenuItem
               _hover={{ bg: 'none' }}

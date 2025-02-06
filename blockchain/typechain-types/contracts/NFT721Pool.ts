@@ -29,6 +29,7 @@ export interface NFT721PoolInterface extends Interface {
       | "approve"
       | "balanceOf"
       | "claim"
+      | "getAllMintedNFTs"
       | "getApproved"
       | "getAvailableNFT"
       | "getUserNFTs"
@@ -73,6 +74,10 @@ export interface NFT721PoolInterface extends Interface {
     values: [AddressLike]
   ): string;
   encodeFunctionData(functionFragment: "claim", values?: undefined): string;
+  encodeFunctionData(
+    functionFragment: "getAllMintedNFTs",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "getApproved",
     values: [BigNumberish]
@@ -142,6 +147,10 @@ export interface NFT721PoolInterface extends Interface {
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "claim", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllMintedNFTs",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(
     functionFragment: "getApproved",
     data: BytesLike
@@ -390,9 +399,11 @@ export interface NFT721Pool extends BaseContract {
 
   claim: TypedContractMethod<[], [void], "nonpayable">;
 
+  getAllMintedNFTs: TypedContractMethod<[], [bigint[]], "view">;
+
   getApproved: TypedContractMethod<[tokenId: BigNumberish], [string], "view">;
 
-  getAvailableNFT: TypedContractMethod<[], [bigint], "view">;
+  getAvailableNFT: TypedContractMethod<[], [bigint[]], "view">;
 
   getUserNFTs: TypedContractMethod<[user: AddressLike], [bigint[]], "view">;
 
@@ -485,11 +496,14 @@ export interface NFT721Pool extends BaseContract {
     nameOrSignature: "claim"
   ): TypedContractMethod<[], [void], "nonpayable">;
   getFunction(
+    nameOrSignature: "getAllMintedNFTs"
+  ): TypedContractMethod<[], [bigint[]], "view">;
+  getFunction(
     nameOrSignature: "getApproved"
   ): TypedContractMethod<[tokenId: BigNumberish], [string], "view">;
   getFunction(
     nameOrSignature: "getAvailableNFT"
-  ): TypedContractMethod<[], [bigint], "view">;
+  ): TypedContractMethod<[], [bigint[]], "view">;
   getFunction(
     nameOrSignature: "getUserNFTs"
   ): TypedContractMethod<[user: AddressLike], [bigint[]], "view">;

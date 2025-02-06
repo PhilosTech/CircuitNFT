@@ -32,8 +32,7 @@ export default function TopCreatorTable(props) {
   const textColor = useColorModeValue('secondaryGray.900', 'white');
   const textColorSecondary = useColorModeValue('secondaryGray.600', 'white');
   const borderColor = useColorModeValue('gray.200', 'whiteAlpha.100');
-  let defaultData = tableData;
-  console.log(tableData);
+  let defaultData = tableData;  
   
   const columns = [
     columnHelper.accessor('name', {

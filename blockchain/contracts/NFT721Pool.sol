@@ -10,10 +10,15 @@ import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/utils/Strings.sol";
 
-contract NFT721Pool is ERC721URIStorage, Ownable, IERC721Receiver, ReentrancyGuard {
+contract NFT721Pool is
+    ERC721URIStorage,
+    Ownable,
+    IERC721Receiver,
+    ReentrancyGuard
+{
     using Counters for Counters.Counter;
     using EnumerableSet for EnumerableSet.UintSet;
-     using Strings for uint256;
+    using Strings for uint256;
 
     Counters.Counter private _tokenIdCounter;
     uint256[] private _availableTokens;
@@ -26,22 +31,27 @@ contract NFT721Pool is ERC721URIStorage, Ownable, IERC721Receiver, ReentrancyGua
 
     constructor() ERC721("NFT721Pool", "NP") {
         for (uint256 i = 0; i < 10; i++) {
-            _tokenIdCounter.increment();
             uint256 tokenId = _tokenIdCounter.current();
             _mint(address(this), tokenId);
+            _setTokenURI(
+                tokenId,
+                string.concat(_baseURI(), tokenId.toString(), ".json")
+            ); // set tokenURI metadata
             _availableTokens.push(tokenId);
             emit NFTMinted(tokenId);
+            _tokenIdCounter.increment();
         }
         _baseTokenURI = "https://ipfs.io/ipfs/bafybeiefbotf6j7krwhampf7vbzavcslx3t2neo7kvb7vhx2oai7agebwy/";
     }
 
     function mint() external onlyOwner {
-        _tokenIdCounter.increment();
         uint256 tokenId = _tokenIdCounter.current();
-        
-        _mint(msg.sender, tokenId);  // mint NFT
-        _setTokenURI(tokenId, string.concat(_baseURI(), tokenId.toString(), ".json")); // Устанавливаем ссылку на метаданные
-        
+        _tokenIdCounter.increment();
+        _mint(msg.sender, tokenId); // mint NFT
+        _setTokenURI(
+            tokenId,
+            string.concat(_baseURI(), tokenId.toString(), ".json")
+        ); // set tokenURI metadata
         emit NFTMinted(tokenId);
     }
 
@@ -72,14 +82,27 @@ contract NFT721Pool is ERC721URIStorage, Ownable, IERC721Receiver, ReentrancyGua
     }
 
     // get available NFT
-    function getAvailableNFT() external view returns (uint256) {
-        require(_availableTokens.length > 0, "No available NFTs");
-        return _availableTokens[_availableTokens.length - 1];
+    function getAvailableNFT() external view returns (uint256[] memory) {
+        return _availableTokens;
     }
 
     // get user NFTs
-    function getUserNFTs(address user) external view returns (uint256[] memory) {
+    function getUserNFTs(
+        address user
+    ) external view returns (uint256[] memory) {
         return _ownedTokens[user].values();
+    }
+
+    // get all minted NFTs
+    function getAllMintedNFTs() external view returns (uint256[] memory) {
+        uint256 totalTokens = _tokenIdCounter.current();
+        uint256[] memory mintedTokens = new uint256[](totalTokens);
+
+        for (uint256 i = 0; i < totalTokens; i++) {
+            mintedTokens[i] = i;
+        }
+
+        return mintedTokens;
     }
 
     // set baseURI
@@ -88,18 +111,38 @@ contract NFT721Pool is ERC721URIStorage, Ownable, IERC721Receiver, ReentrancyGua
     }
 
     // ERC721Receiver implementation
-    function onERC721Received(address, address, uint256, bytes memory) public virtual override returns (bytes4) {
+    function onERC721Received(
+        address,
+        address,
+        uint256,
+        bytes memory
+    ) public virtual override returns (bytes4) {
         return this.onERC721Received.selector;
     }
 
     // disable transfers
-    function transferFrom(address from, address to, uint256 tokenId) public override(ERC721, IERC721) {
-        require(to == address(this) || from == address(this), "Transfers disabled");
+    function transferFrom(
+        address from,
+        address to,
+        uint256 tokenId
+    ) public override(ERC721, IERC721) {
+        require(
+            to == address(this) || from == address(this),
+            "Transfers disabled"
+        );
         super.transferFrom(from, to, tokenId);
     }
 
-    function safeTransferFrom(address from, address to, uint256 tokenId, bytes memory data) public override(ERC721, IERC721) {
-        require(to == address(this) || from == address(this), "Transfers disabled");
+    function safeTransferFrom(
+        address from,
+        address to,
+        uint256 tokenId,
+        bytes memory data
+    ) public override(ERC721, IERC721) {
+        require(
+            to == address(this) || from == address(this),
+            "Transfers disabled"
+        );
         super.safeTransferFrom(from, to, tokenId, data);
     }
 
